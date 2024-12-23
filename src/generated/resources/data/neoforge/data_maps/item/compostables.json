@@ -1,0 +1,10 @@
+{
+  "values": {
+    "cookscollection:fried_potato": {
+      "chance": 0.45
+    },
+    "cookscollection:lemon": {
+      "chance": 0.25
+    }
+  }
+}

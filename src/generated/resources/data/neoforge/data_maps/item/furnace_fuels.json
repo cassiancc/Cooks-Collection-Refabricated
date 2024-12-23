@@ -1,0 +1,13 @@
+{
+  "values": {
+    "cookscollection:lemon_log": {
+      "burn_time": 50
+    },
+    "cookscollection:lemon_sapling": {
+      "burn_time": 50
+    },
+    "cookscollection:lemon_wood": {
+      "burn_time": 50
+    }
+  }
+}
