@@ -23,7 +23,7 @@ import java.util.function.Supplier;
 
 public class ModBlocks {
     public static final net.neoforged.neoforge.registries.DeferredRegister.Blocks BLOCKS =
-            net.neoforged.neoforge.registries.DeferredRegister.createBlocks(CooksCollection.MOD_ID);
+            DeferredRegister.createBlocks(CooksCollection.MOD_ID);
     
     public static final DeferredBlock<Block> LEMON_SAPLING = registerBlock("lemon_sapling",
             () -> new SaplingBlock(ModTreeGrowers.LEMON, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
@@ -61,10 +61,8 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SALTED_DRIPSTONE_BLOCK = registerBlock("salted_dripstone_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.DRIPSTONE_BLOCK).noOcclusion()));
 
-
-    //public static final DeferredBlock<Block> OVEN = registerBlock("oven",
-    //        () -> new Block(BlockBehaviour.Properties.ofFullCopy(vectorwing.farmersdelight.common.registry.ModBlocks.STOVE.get())));
-
+    public static final DeferredBlock<Block> OVEN = registerBlock("oven",
+            () -> new OvenBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
 
 
 

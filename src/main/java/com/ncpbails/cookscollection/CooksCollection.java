@@ -1,8 +1,13 @@
 package com.ncpbails.cookscollection;
 
 import com.ncpbails.cookscollection.block.ModBlocks;
+import com.ncpbails.cookscollection.block.entity.ModBlockEntities;
+import com.ncpbails.cookscollection.block.entity.screen.ModMenus;
+import com.ncpbails.cookscollection.block.entity.screen.OvenScreen;
 import com.ncpbails.cookscollection.item.ModItems;
+import com.ncpbails.cookscollection.recipe.ModRecipes;
 import com.ncpbails.cookscollection.tab.ModCreativeModeTabs;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -20,7 +25,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
+import static com.ncpbails.cookscollection.block.entity.screen.ModMenus.OVEN_MENU;
+
 @Mod(CooksCollection.MOD_ID)
 public class CooksCollection
 {
@@ -34,9 +40,13 @@ public class CooksCollection
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
+        ModMenus.register(modEventBus);
+        //ModRecipes.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
+        modEventBus.addListener(this::registerScreens);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -45,20 +55,21 @@ public class CooksCollection
 
     }
 
-    // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event)
     {
 
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
 
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
+    public void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(ModMenus.OVEN_MENU.get(), OvenScreen::new);
+    }
+
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
