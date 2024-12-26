@@ -1,0 +1,19 @@
+{
+  "type": "cookscollection:baking",
+  "cookingtime": 400,
+  "ingredients": [
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "id": "cookscollection:lemon"
+  }
+}

@@ -1,13 +1,12 @@
 package com.ncpbails.cookscollection.block.custom;
 
+import com.mojang.serialization.MapCodec;
 import com.ncpbails.cookscollection.block.entity.ModBlockEntities;
 import com.ncpbails.cookscollection.block.entity.OvenBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,9 +22,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.Nullable;
+import vectorwing.farmersdelight.common.utility.TextUtils;
 
-public class OvenBlock extends Block implements EntityBlock {
+public class OvenBlock extends BaseEntityBlock {
+    public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -33,6 +33,9 @@ public class OvenBlock extends Block implements EntityBlock {
         super(properties);
     }
 
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
     /* FACING */
 
     @Override
@@ -59,38 +62,37 @@ public class OvenBlock extends Block implements EntityBlock {
     /* BLOCK ENTITY */
 
 
-    @Override
-    public void onRemove(BlockState oldState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (oldState.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof OvenBlockEntity) {
-                ((OvenBlockEntity) blockEntity).drops();
-            }
-        }
-        super.onRemove(oldState, level, pos, newState, isMoving);
-    }
-
 
     @Override
     public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (!level.isClientSide) {
-            MenuProvider menuProvider = this.getMenuProvider(state, level, pos);
-            if (menuProvider != null && player instanceof ServerPlayer serverPlayer) {
-                System.out.println("Opening menu for OvenBlock");
-                serverPlayer.openMenu(menuProvider);
-            } else {
-                System.out.println("MenuProvider is null or player is not ServerPlayer");
+            BlockEntity tileEntity = level.getBlockEntity(pos);
+            if (tileEntity instanceof OvenBlockEntity) {
+                    player.openMenu((OvenBlockEntity)tileEntity, pos);
             }
+            return ItemInteractionResult.SUCCESS;
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.SUCCESS;
     }
-
 
 
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+
+    @Override
+    public void onRemove(BlockState oldState, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (oldState.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof OvenBlockEntity) {
+                ((OvenBlockEntity) blockEntity).drops();
+                level.updateNeighbourForOutputSignal(pos, this);
+            }
+            super.onRemove(oldState, level, pos, newState, isMoving);
+        }
     }
 
     @Override
