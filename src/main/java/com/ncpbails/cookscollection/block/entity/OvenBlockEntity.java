@@ -24,8 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
-import vectorwing.farmersdelight.common.block.entity.container.CookingPotMenu;
-import vectorwing.farmersdelight.common.crafting.CookingPotRecipe;
 import vectorwing.farmersdelight.common.tag.ModTags;
 
 import javax.annotation.Nullable;
@@ -199,39 +197,10 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
-
-        // Check for OvenShapedRecipe
-        //Optional<OvenShapedRecipe> shapedMatch = level.getRecipeManager()
-        //        .getRecipeFor(OvenShapedRecipe.Type.INSTANCE, inventory, level);
-
-        // Check for OvenRecipe
-
         Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
                 .getRecipeFor(OvenRecipe.Type.INSTANCE, new RecipeWrapper(entity.itemHandler), level);
 
-       /* if (shapedMatch.isPresent()) {
-            for(int i = 0; i < 9; ++i) {
-                ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
-                if (slotStack.hasCraftingRemainingItem()) {
-                    Direction direction = ((Direction)entity.getBlockState().getValue(OvenBlock.FACING)).getCounterClockWise();
-                    double x = (double)entity.worldPosition.getX() + 0.5 + (double)direction.getStepX() * 0.25;
-                    double y = (double)entity.worldPosition.getY() + 0.7;
-                    double z = (double)entity.worldPosition.getZ() + 0.5 + (double)direction.getStepZ() * 0.25;
-                    spawnItemEntity(entity.level, entity.itemHandler.getStackInSlot(i).getCraftingRemainingItem(), x, y, z, (double)((float)direction.getStepX() * 0.08F), 0.25, (double)((float)direction.getStepZ() * 0.08F));
-                }
-            }
-
-            for (int i = 0; i < 9; ++i) {
-                entity.itemHandler.extractItem(i, 1, false);
-            }
-            inventory.getItem(9).is(shapedMatch.get().getResultItem().getItem());
-
-            entity.itemHandler.setStackInSlot(9, new ItemStack(shapedMatch.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(shapedMatch.get().getResultItem())));
-
-            entity.resetProgress();
-
-        } else */if (recipeMatch.isPresent()) {
+        if (recipeMatch.isPresent()) {
             for(int i = 0; i < 9; ++i) {
                 ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
                 if (slotStack.hasCraftingRemainingItem()) {
@@ -248,10 +217,10 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             }
             OvenRecipe recipe = recipeMatch.get().value();
 
-            inventory.getItem(9).is(recipe.getResultItemy().getItem());
+            inventory.getItem(9).is(recipe.getResultItem(level.registryAccess()).getItem());
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(recipe.getResultItemy().getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(recipe.getResultItemy())));
+            entity.itemHandler.setStackInSlot(9, new ItemStack(recipe.getResultItem(level.registryAccess()).getItem(),
+                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(recipe.getResultItem(level.registryAccess()))));
 
             entity.resetProgress();
         }

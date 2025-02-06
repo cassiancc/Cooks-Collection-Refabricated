@@ -4,8 +4,6 @@ import com.mojang.serialization.MapCodec;
 import com.ncpbails.cookscollection.block.entity.ModBlockEntities;
 import com.ncpbails.cookscollection.block.entity.OvenBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +20,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import vectorwing.farmersdelight.common.utility.TextUtils;
 
 public class OvenBlock extends BaseEntityBlock {
     public static final MapCodec<OvenBlock> CODEC = simpleCodec(OvenBlock::new);

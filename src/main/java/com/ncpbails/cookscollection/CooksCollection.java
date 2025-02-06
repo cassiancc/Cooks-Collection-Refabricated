@@ -42,7 +42,7 @@ public class CooksCollection
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
         ModMenus.register(modEventBus);
-        //ModRecipes.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
