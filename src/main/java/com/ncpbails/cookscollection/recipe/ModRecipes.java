@@ -16,9 +16,10 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MOD_ID);;
 
     public static final Supplier<RecipeType<OvenRecipe>> BAKING = RECIPE_TYPES.register("baking", () -> registerRecipeType("baking"));
-    public static final Supplier<RecipeSerializer<?>> BAKING_SERIALIZER = SERIALIZERS.register("baking", OvenRecipe.Serializer::new);
+    public static final Supplier<RecipeType<OvenShapedRecipe>> BAKING_SHAPED = RECIPE_TYPES.register("baking_shaped", () -> registerRecipeType("baking_shaped"));
 
-    //public static final Supplier<RecipeSerializer<?>> BAKING_SHAPED_SERIALIZER = SERIALIZERS.register("baking_shaped", OvenShapedRecipe.Serializer::new);
+    public static final Supplier<RecipeSerializer<?>> BAKING_SERIALIZER = SERIALIZERS.register("baking", OvenRecipe.Serializer::new);
+    public static final Supplier<RecipeSerializer<?>> BAKING_SHAPED_SERIALIZER = SERIALIZERS.register("baking_shaped", OvenShapedRecipe.Serializer::new);
 
     public static <T extends Recipe<?>> RecipeType<T> registerRecipeType(final String identifier) {
         return new RecipeType<T>() {

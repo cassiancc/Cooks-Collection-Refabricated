@@ -5,6 +5,7 @@ import com.ncpbails.cookscollection.block.entity.screen.OvenMenu;
 import com.ncpbails.cookscollection.client.ModSounds;
 import com.ncpbails.cookscollection.recipe.ModRecipes;
 import com.ncpbails.cookscollection.recipe.OvenRecipe;
+import com.ncpbails.cookscollection.recipe.OvenShapedRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -183,14 +184,21 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         // Check for OvenShapedRecipe
-        //Optional<OvenShapedRecipe> shapedMatch = level.getRecipeManager()
-        //        .getRecipeFor(OvenShapedRecipe.Type.INSTANCE, inventory, level);
+        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch =
+                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
 
         // Check for OvenRecipe
 
         Optional<RecipeHolder<OvenRecipe>> recipeMatch =
                 level.getRecipeManager().getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
 
+
+        if (shapedMatch.isPresent()) {
+            OvenShapedRecipe recipe = shapedMatch.get().value();
+
+            entity.maxProgress = recipe.getCookTime();
+            return true;
+        }
         if (recipeMatch.isPresent()) {
             OvenRecipe recipe = recipeMatch.get().value();
 
@@ -227,8 +235,10 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
         }
         Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
                 .getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
+        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch = level.getRecipeManager()
+                .getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
 
-        if (recipeMatch.isPresent()) {
+        if (recipeMatch.isPresent() || shapedMatch.isPresent()) {
             for(int i = 0; i < 9; ++i) {
                 ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
                 if (slotStack.hasCraftingRemainingItem()) {
@@ -243,12 +253,22 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             for (int i = 0; i < 9; ++i) {
                 entity.itemHandler.extractItem(i, 1, false);
             }
-            OvenRecipe recipe = recipeMatch.get().value();
 
-            inventory.getItem(9).is(recipe.getResultItem(level.registryAccess()).getItem());
+            ItemStack result;
+            if (shapedMatch.isPresent()) {
+                OvenShapedRecipe recipe = shapedMatch.get().value();
+                result = recipe.getResultItem(level.registryAccess());
+            }
+            else {
+                OvenRecipe recipe = recipeMatch.get().value();
+                result = recipe.getResultItem(level.registryAccess());
+            }
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(recipe.getResultItem(level.registryAccess()).getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(recipe.getResultItem(level.registryAccess()))));
+
+            inventory.getItem(9).is(result.getItem());
+
+            entity.itemHandler.setStackInSlot(9, new ItemStack(result.getItem(),
+                    entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(result)));
 
             entity.resetProgress();
         }

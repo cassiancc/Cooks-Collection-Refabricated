@@ -2,6 +2,7 @@ package com.ncpbails.cookscollection.integration;
 
 import com.ncpbails.cookscollection.recipe.ModRecipes;
 import com.ncpbails.cookscollection.recipe.OvenRecipe;
+import com.ncpbails.cookscollection.recipe.OvenShapedRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -24,5 +25,10 @@ public class CCRecipes {
     }
 
     public List<OvenRecipe> getOvenRecipes() {
-        return recipeManager.getAllRecipesFor(ModRecipes.BAKING.get()).stream().map(RecipeHolder::value).toList();    }
+        return recipeManager.getAllRecipesFor(ModRecipes.BAKING.get()).stream().map(RecipeHolder::value).toList();
+    }
+
+    public List<OvenShapedRecipe> getOvenShapedRecipes() {
+        return recipeManager.getAllRecipesFor(ModRecipes.BAKING_SHAPED.get()).stream().map(RecipeHolder::value).toList();
+    }
 }
