@@ -177,16 +177,16 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
         BlockState stateBelow = level.getBlockState(pos.below());
         if (stateBelow.hasProperty(BlockStateProperties.LIT) ? stateBelow.getValue(BlockStateProperties.LIT) : true) {
             if (stateBelow.is(ModTags.HEAT_SOURCES) || stateBelow.is(ModTags.HEAT_CONDUCTORS)) {
-                level.setBlock(pos, entity.getBlockState().setValue(LIT, Boolean.valueOf(true)), 3);
+                level.setBlock(pos, entity.getBlockState().setValue(LIT, true), 3);
                 return true;
             }
             else {
-                level.setBlock(pos, entity.getBlockState().setValue(LIT, Boolean.valueOf(false)), 3);
+                level.setBlock(pos, entity.getBlockState().setValue(LIT, false), 3);
                 return false;
             }
         }
         else {
-            level.setBlock(pos, entity.getBlockState().setValue(LIT, Boolean.valueOf(false)), 3);
+            level.setBlock(pos, entity.getBlockState().setValue(LIT, false), 3);
             return false;
         }
     }
@@ -204,7 +204,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             for(int i = 0; i < 9; ++i) {
                 ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
                 if (slotStack.hasCraftingRemainingItem()) {
-                    Direction direction = ((Direction)entity.getBlockState().getValue(OvenBlock.FACING)).getCounterClockWise();
+                    Direction direction = entity.getBlockState().getValue(OvenBlock.FACING).getCounterClockWise();
                     double x = (double)entity.worldPosition.getX() + 0.5 + (double)direction.getStepX() * 0.25;
                     double y = (double)entity.worldPosition.getY() + 0.7;
                     double z = (double)entity.worldPosition.getZ() + 0.5 + (double)direction.getStepZ() * 0.25;
