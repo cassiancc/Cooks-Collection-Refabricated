@@ -1,6 +1,5 @@
 package com.ncpbails.cookscollection.recipe;
 
-import com.ncpbails.cookscollection.CooksCollection;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,7 +15,7 @@ public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MOD_ID);;
 
-    public static final RecipeType<Recipe<?>> BAKING = registerRecipeType("baking");
+    public static final Supplier<RecipeType<OvenRecipe>> BAKING = RECIPE_TYPES.register("baking", () -> registerRecipeType("baking"));
     public static final Supplier<RecipeSerializer<?>> BAKING_SERIALIZER = SERIALIZERS.register("baking", OvenRecipe.Serializer::new);
 
     //public static final Supplier<RecipeSerializer<?>> BAKING_SHAPED_SERIALIZER = SERIALIZERS.register("baking_shaped", OvenShapedRecipe.Serializer::new);
@@ -30,6 +29,7 @@ public class ModRecipes {
     }
 
     public static void register(IEventBus eventBus) {
+        RECIPE_TYPES.register(eventBus);
         SERIALIZERS.register(eventBus);
     }
 }

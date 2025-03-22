@@ -77,7 +77,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
     }
 
     public RecipeType<?> getType() {
-        return ModRecipes.BAKING;
+        return ModRecipes.BAKING.get();
     }
 
     public ItemStack getToastSymbol() {
