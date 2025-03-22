@@ -3,6 +3,7 @@ package com.ncpbails.cookscollection.block.entity;
 import com.ncpbails.cookscollection.block.custom.OvenBlock;
 import com.ncpbails.cookscollection.block.entity.screen.OvenMenu;
 import com.ncpbails.cookscollection.client.ModSounds;
+import com.ncpbails.cookscollection.recipe.ModRecipes;
 import com.ncpbails.cookscollection.recipe.OvenRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -187,8 +188,8 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
 
         // Check for OvenRecipe
 
-        Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
-                .getRecipeFor(OvenRecipe.Type.INSTANCE, new RecipeWrapper(entity.itemHandler), level);
+        Optional<RecipeHolder<OvenRecipe>> recipeMatch =
+                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
 
         if (recipeMatch.isPresent()) {
             OvenRecipe recipe = recipeMatch.get().value();
@@ -225,7 +226,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
         Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
-                .getRecipeFor(OvenRecipe.Type.INSTANCE, new RecipeWrapper(entity.itemHandler), level);
+                .getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
 
         if (recipeMatch.isPresent()) {
             for(int i = 0; i < 9; ++i) {
