@@ -2,12 +2,16 @@ package com.ncpbails.cookscollection.block.entity;
 
 import com.ncpbails.cookscollection.block.custom.OvenBlock;
 import com.ncpbails.cookscollection.block.entity.screen.OvenMenu;
+import com.ncpbails.cookscollection.client.ModSounds;
 import com.ncpbails.cookscollection.recipe.OvenRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -20,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -37,6 +42,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
     private int progress = 0;
     private int maxProgress = 72;
     private int litTime = 0;
+    private ContainerOpenersCounter openersCounter;
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(11) {
         @Override
@@ -68,6 +74,29 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
 
             public int getCount() {
                 return 3;
+            }
+        };
+        this.openersCounter = new ContainerOpenersCounter() {
+            protected void onOpen(Level level, BlockPos pos, BlockState state) {
+                OvenBlockEntity.this.playSound(state, ModSounds.OVEN_OPEN.get());
+                OvenBlockEntity.this.updateBlockState(state, true);
+            }
+
+            protected void onClose(Level level, BlockPos pos, BlockState state) {
+                OvenBlockEntity.this.playSound(state, ModSounds.OVEN_CLOSE.get());
+                OvenBlockEntity.this.updateBlockState(state, false);
+            }
+
+            protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int p_155069_, int p_155070_) {
+            }
+
+            protected boolean isOwnContainer(Player player) {
+                if (player.containerMenu instanceof OvenMenu) {
+                    BlockEntity be = ((OvenMenu)player.containerMenu).getBlockEntity();
+                    return be == OvenBlockEntity.this;
+                } else {
+                    return false;
+                }
             }
         };
     }
@@ -116,21 +145,19 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, OvenBlockEntity pBlockEntity) {
-        if(isFueled(pBlockEntity, pPos, pLevel))
-        {
+        pBlockEntity.recheckOpen();
+        if (isFueled(pBlockEntity, pPos, pLevel)) {
             pBlockEntity.litTime = 1;
             setChanged(pLevel, pPos, pState);
-        }
-        else
-        {
+        } else {
             pBlockEntity.litTime = 0;
             setChanged(pLevel, pPos, pState);
         }
 
-        if(hasRecipe(pBlockEntity)) {
+        if (hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
-            if(pBlockEntity.progress > pBlockEntity.maxProgress) {
+            if (pBlockEntity.progress > pBlockEntity.maxProgress) {
                 craftItem(pBlockEntity);
             }
         } else {
@@ -237,5 +264,39 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
     private void resetProgress() {
         this.progress = 0;
         this.maxProgress = 72;
+    }
+
+
+    public void startOpen(Player player) {
+        if (!this.remove && !player.isSpectator()) {
+            this.openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+        }
+
+    }
+
+    public void stopOpen(Player player) {
+        if (!this.remove && !player.isSpectator()) {
+            this.openersCounter.decrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+        }
+
+    }
+
+    public void recheckOpen() {
+        if (!this.remove) {
+            this.openersCounter.recheckOpeners(this.getLevel(), this.getBlockPos(), this.getBlockState());
+        }
+
+    }
+
+    void updateBlockState(BlockState state, boolean open) {
+        this.level.setBlock(this.getBlockPos(), state.setValue(OvenBlock.OPEN, open), 3);
+    }
+
+    void playSound(BlockState state, SoundEvent sound) {
+        Vec3i normal = state.getValue(OvenBlock.FACING).getNormal();
+        double x = (double)this.worldPosition.getX() + (double)0.5F + (double)normal.getX() / (double)2.0F;
+        double y = (double)this.worldPosition.getY() + (double)0.5F + (double)normal.getY() / (double)2.0F;
+        double z = (double)this.worldPosition.getZ() + (double)0.5F + (double)normal.getZ() / (double)2.0F;
+        this.level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, this.level.random.nextFloat() * 0.1F + 0.9F);
     }
 }
