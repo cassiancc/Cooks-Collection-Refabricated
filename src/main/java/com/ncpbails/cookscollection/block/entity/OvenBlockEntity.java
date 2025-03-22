@@ -75,7 +75,7 @@ public class OvenBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return Component.literal("Oven");
+        return Component.translatable("block.cookscollection.oven");
     }
 
     @Nullable
