@@ -4,9 +4,12 @@ import com.ncpbails.cookscollection.block.ModBlocks;
 import com.ncpbails.cookscollection.block.entity.ModBlockEntities;
 import com.ncpbails.cookscollection.block.entity.screen.ModMenus;
 import com.ncpbails.cookscollection.block.entity.screen.OvenScreen;
+import com.ncpbails.cookscollection.client.ModSounds;
 import com.ncpbails.cookscollection.item.ModItems;
 import com.ncpbails.cookscollection.recipe.ModRecipes;
 import com.ncpbails.cookscollection.tab.ModCreativeModeTabs;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
@@ -48,6 +51,13 @@ public class CooksCollection
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerScreens);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        if (FMLEnvironment.dist.isClient())
+            ModSounds.register(modEventBus);
+    }
+
+    public static ResourceLocation locate(String identifier) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, identifier);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)

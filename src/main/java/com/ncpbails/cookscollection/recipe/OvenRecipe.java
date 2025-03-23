@@ -3,6 +3,7 @@ package com.ncpbails.cookscollection.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.ncpbails.cookscollection.block.ModBlocks;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
@@ -15,9 +16,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.RecipeMatcher;
 import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
-import vectorwing.farmersdelight.common.registry.ModItems;
-import vectorwing.farmersdelight.common.registry.ModRecipeSerializers;
-import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,15 +73,15 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
     }
 
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.COOKING.get();
+        return ModRecipes.BAKING_SERIALIZER.get();
     }
 
     public RecipeType<?> getType() {
-        return ModRecipeTypes.COOKING.get();
+        return ModRecipes.BAKING.get();
     }
 
     public ItemStack getToastSymbol() {
-        return new ItemStack(ModItems.COOKING_POT.get());
+        return new ItemStack(ModBlocks.OVEN.get());
     }
 
     public boolean equals(Object o) {
@@ -115,7 +113,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
                 Ingredient.LIST_CODEC_NONEMPTY.fieldOf("ingredients").forGetter(OvenRecipe::getIngredients),
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter((r) -> r.output),
                 Codec.INT.optionalFieldOf("cookingtime", 200).forGetter(OvenRecipe::getCookTime)
-        ).apply(inst, (ingredients, output, cookTime) -> new OvenRecipe((NonNullList<Ingredient>) ingredients, output, cookTime)));
+        ).apply(inst, (ingredients, output, cookTime) -> new OvenRecipe(NonNullList.copyOf(ingredients), output, cookTime)));
 
         public Serializer() {}
 

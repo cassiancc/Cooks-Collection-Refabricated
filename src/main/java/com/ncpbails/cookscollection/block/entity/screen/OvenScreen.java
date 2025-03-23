@@ -1,11 +1,7 @@
 package com.ncpbails.cookscollection.block.entity.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.ncpbails.cookscollection.CooksCollection;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,6 +38,10 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         this.renderBackground(guiGraphics, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, delta);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+        if (this.isHovering(93, 55, 17, 15, mouseX, mouseY)) {
+            String key = "container.cookscollection.oven." + (this.menu.isFueled() ? "heated" : "not_heated");
+            guiGraphics.renderTooltip(this.font, Component.translatable(key), mouseX, mouseY);
+        }
     }
 
     protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY) {
