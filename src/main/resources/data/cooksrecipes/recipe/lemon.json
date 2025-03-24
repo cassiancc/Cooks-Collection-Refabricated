@@ -1,16 +1,12 @@
 {
-  "type": "cookscollection:baking",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "cookscollection:lemon"
-    },
-    {
-      "item": "cookscollection:lemon"
+      "item": "cookscollection:lemon_crate"
     }
   ],
   "result": {
-    "id": "minecraft:sugar",
-    "count": 1
-  },
-  "cookingtime": 200
+    "count": 9,
+    "id": "cookscollection:lemon"
+  }
 }

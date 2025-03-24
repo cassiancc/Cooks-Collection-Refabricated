@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cookscollection:salted_dripstone_block"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "cookscollection:salt"
+  }
+}

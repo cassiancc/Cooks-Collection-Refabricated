@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    },
+    {
+      "item": "cookscollection:lemon"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "cookscollection:lemon_crate"
+  }
+}
