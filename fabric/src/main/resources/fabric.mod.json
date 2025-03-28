@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "cooks_collection",
+  "version": "${version}",
+  "name": "Cook's Collection",
+  "description": "A Farmer's Delight addon containing various additions.",
+  "authors": [
+    "Baisylia",
+    "Bagels",
+    "Raspmary",
+    "cassiancc"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "ARR",
+  "icon": "assets/cooks_collection/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.baisylia.cookscollection.fabric.CooksCollectionFabric"
+    ],
+    "client": [
+	  "com.baisylia.cookscollection.fabric.client.CooksCollectionFabricClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "architectury": ">=13.0.8",
+    "fabric-api": "*",
+    "farmersdelight": "*"
+  }
+}

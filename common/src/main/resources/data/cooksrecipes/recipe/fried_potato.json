@@ -1,0 +1,21 @@
+{
+  "type": "farmersdelight:cooking",
+  "cookingtime": 400,
+  "experience": 2.0,
+  "ingredients": [
+    {
+      "item": "cookscollection:cooking_oil"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "cookscollection:salt"
+    }
+  ],
+  "recipe_book_tab": "meals",
+  "result": {
+    "count": 1,
+    "id": "cookscollection:fried_potato"
+  }
+}

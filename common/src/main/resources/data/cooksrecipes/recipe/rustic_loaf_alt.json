@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "cookscollection:rustic_loaf_slice"
+    },
+    {
+      "item": "cookscollection:rustic_loaf_slice"
+    },
+    {
+      "item": "cookscollection:rustic_loaf_slice"
+    },
+    {
+      "item": "cookscollection:rustic_loaf_slice"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "cookscollection:rustic_loaf"
+  }
+}
