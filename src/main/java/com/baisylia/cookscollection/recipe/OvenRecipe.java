@@ -14,8 +14,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.common.util.RecipeMatcher;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import vectorwing.farmersdelight.refabricated.inventory.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
             }
         }
 
-        return i == this.inputItems.size() && RecipeMatcher.findMatches(inputs, this.inputItems) != null;
+        return inv.ingredientAmount() == this.inputItems.size() && inv.stackedContents().canCraft(this, null);
     }
 
     public boolean canCraftInDimensions(int width, int height) {
@@ -109,11 +108,17 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
     }
 
     public static class Serializer implements RecipeSerializer<OvenRecipe> {
-        private static final MapCodec<OvenRecipe> CODEC = RecordCodecBuilder.mapCodec((inst) -> inst.group(
-                Ingredient.LIST_CODEC_NONEMPTY.fieldOf("ingredients").forGetter(OvenRecipe::getIngredients),
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter((r) -> r.output),
+
+        private static final MapCodec<OvenRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+
+        Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").xmap(ingredients -> {
+                    NonNullList<Ingredient> nonNullList = NonNullList.create();
+                    nonNullList.addAll(ingredients);
+                    return nonNullList;
+                }, ingredients -> ingredients).forGetter(OvenRecipe::getIngredients),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(r -> r.output),
                 Codec.INT.optionalFieldOf("cookingtime", 200).forGetter(OvenRecipe::getCookTime)
-        ).apply(inst, (ingredients, output, cookTime) -> new OvenRecipe(NonNullList.copyOf(ingredients), output, cookTime)));
+        ).apply(inst, OvenRecipe::new));
 
         public Serializer() {}
 
@@ -122,7 +127,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
         }
 
         public StreamCodec<RegistryFriendlyByteBuf, OvenRecipe> streamCodec() {
-            return StreamCodec.of(OvenRecipe.Serializer::toNetwork, OvenRecipe.Serializer::fromNetwork);
+            return StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
         }
 
         private static OvenRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,7 +31,7 @@ public class OvenBlock extends BaseEntityBlock {
     public static BooleanProperty LIT = BlockStateProperties.LIT;
     public static BooleanProperty OPEN = BlockStateProperties.OPEN;
 
-    public OvenBlock(BlockBehaviour.Properties properties) {
+    public OvenBlock(Properties properties) {
         super(properties);
     }
 
@@ -91,8 +90,8 @@ public class OvenBlock extends BaseEntityBlock {
     public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         if (!level.isClientSide) {
             BlockEntity tileEntity = level.getBlockEntity(pos);
-            if (tileEntity instanceof OvenBlockEntity) {
-                    player.openMenu((OvenBlockEntity)tileEntity, pos);
+            if (tileEntity instanceof OvenBlockEntity ovenBlockEntity) {
+                player.openMenu(ovenBlockEntity);
             }
             return ItemInteractionResult.SUCCESS;
         }

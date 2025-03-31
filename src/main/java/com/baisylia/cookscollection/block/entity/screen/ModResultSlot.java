@@ -2,10 +2,10 @@ package com.baisylia.cookscollection.block.entity.screen;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import vectorwing.farmersdelight.refabricated.inventory.ItemHandlerSlot;
+import vectorwing.farmersdelight.refabricated.inventory.ItemStackHandler;
 
-public class ModResultSlot extends SlotItemHandler {
+public class ModResultSlot extends ItemHandlerSlot {
 
     public ModResultSlot(ItemStackHandler itemHandler, int index, int x, int y) {
         super(itemHandler, index, x, y);

@@ -3,6 +3,7 @@ package com.baisylia.cookscollection.block.custom;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -38,14 +39,14 @@ public class RusticLoafBlock extends Block {
     protected static final VoxelShape SHAPE;
     public final Supplier<Item> pieSlice;
 
-    public RusticLoafBlock(BlockBehaviour.Properties properties, Supplier<Item> pieSlice) {
+    public RusticLoafBlock(Properties properties, Supplier<Item> pieSlice) {
         super(properties);
         this.pieSlice = pieSlice;
-        this.registerDefaultState((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(FACING, Direction.NORTH)).setValue(BITES, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(BITES, 0));
     }
 
     public ItemStack getPieSliceItem() {
-        return new ItemStack((ItemLike)this.pieSlice.get());
+        return new ItemStack(this.pieSlice.get());
     }
 
     public int getMaxBites() {
@@ -101,7 +102,7 @@ public class RusticLoafBlock extends Block {
             return InteractionResult.PASS;
         } else {
             ItemStack sliceStack = this.getPieSliceItem();
-            FoodProperties sliceFood = sliceStack.getItem().getFoodProperties(sliceStack, playerIn);
+            FoodProperties sliceFood = sliceStack.getComponents().get(DataComponents.FOOD);
             if (sliceFood != null) {
                 playerIn.getFoodData().eat(sliceFood);
 
@@ -112,9 +113,9 @@ public class RusticLoafBlock extends Block {
                 }
             }
 
-            int bites = (Integer)state.getValue(BITES);
+            int bites = state.getValue(BITES);
             if (bites < this.getMaxBites() - 1) {
-                level.setBlock(pos, (BlockState)state.setValue(BITES, bites + 1), 3);
+                level.setBlock(pos, state.setValue(BITES, bites + 1), 3);
             } else {
                 level.removeBlock(pos, false);
             }

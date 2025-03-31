@@ -2,7 +2,9 @@ package com.baisylia.cookscollection.block.entity.screen;
 
 import com.baisylia.cookscollection.block.ModBlocks;
 import com.baisylia.cookscollection.block.entity.OvenBlockEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -10,8 +12,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
+import vectorwing.farmersdelight.refabricated.inventory.ItemHandlerSlot;
+import vectorwing.farmersdelight.refabricated.inventory.ItemStackHandler;
 
 public class OvenMenu extends AbstractContainerMenu {
 
@@ -19,8 +21,8 @@ public class OvenMenu extends AbstractContainerMenu {
     private final Level level;
     private final ContainerData data;
 
-    public OvenMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
+    public OvenMenu(int pContainerId, Inventory inv, BlockPos extraData) {
+        this(pContainerId, inv, inv.player.level().getBlockEntity(extraData), new SimpleContainerData(3));
     }
 
     public OvenMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -34,15 +36,15 @@ public class OvenMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         ItemStackHandler handler = blockEntity.getItemHandler();  // Assuming getItemHandler() returns ItemStackHandler
-        this.addSlot(new SlotItemHandler(handler, 0, 30, 17));    // Slot 0
-        this.addSlot(new SlotItemHandler(handler, 1, 48, 17));    // Slot 1
-        this.addSlot(new SlotItemHandler(handler, 2, 66, 17));    // Slot 2
-        this.addSlot(new SlotItemHandler(handler, 3, 30, 35));    // Slot 3
-        this.addSlot(new SlotItemHandler(handler, 4, 48, 35));    // Slot 4
-        this.addSlot(new SlotItemHandler(handler, 5, 66, 35));    // Slot 5
-        this.addSlot(new SlotItemHandler(handler, 6, 30, 53));    // Slot 6
-        this.addSlot(new SlotItemHandler(handler, 7, 48, 53));    // Slot 7
-        this.addSlot(new SlotItemHandler(handler, 8, 66, 53));    // Slot 8
+        this.addSlot(new ItemHandlerSlot(handler, 0, 30, 17));    // Slot 0
+        this.addSlot(new ItemHandlerSlot(handler, 1, 48, 17));    // Slot 1
+        this.addSlot(new ItemHandlerSlot(handler, 2, 66, 17));    // Slot 2
+        this.addSlot(new ItemHandlerSlot(handler, 3, 30, 35));    // Slot 3
+        this.addSlot(new ItemHandlerSlot(handler, 4, 48, 35));    // Slot 4
+        this.addSlot(new ItemHandlerSlot(handler, 5, 66, 35));    // Slot 5
+        this.addSlot(new ItemHandlerSlot(handler, 6, 30, 53));    // Slot 6
+        this.addSlot(new ItemHandlerSlot(handler, 7, 48, 53));    // Slot 7
+        this.addSlot(new ItemHandlerSlot(handler, 8, 66, 53));    // Slot 8
         this.addSlot(new ModResultSlot(handler, 9, 124, 35));  // Output slot
 
         addDataSlots(data);

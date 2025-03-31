@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
+import vectorwing.farmersdelight.refabricated.inventory.RecipeWrapper;
 
 public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
 
@@ -45,6 +45,8 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
         return this.cookTime;
     }
 
+
+    @Override
     public boolean matches(RecipeWrapper inv, Level level) {
         ItemStack outputSlot = inv.getItem(9);
         if (!outputSlot.isEmpty() && !ItemStack.isSameItem(this.output, outputSlot)) {
@@ -117,17 +119,17 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
         return true; // All ingredients matched
     }
 
-    @Override
-    public ItemStack assemble(RecipeWrapper inv, HolderLookup.Provider provider) {
-        return output;
-    }
-
     public int getWidth() {
         return this.pattern.width();
     }
 
     public int getHeight() {
         return this.pattern.height();
+    }
+
+    @Override
+    public ItemStack assemble(RecipeWrapper recipeInput, HolderLookup.Provider provider) {
+        return output;
     }
 
     @Override
@@ -160,7 +162,7 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
         }
 
         public StreamCodec<RegistryFriendlyByteBuf, OvenShapedRecipe> streamCodec() {
-            return StreamCodec.of(OvenShapedRecipe.Serializer::toNetwork, OvenShapedRecipe.Serializer::fromNetwork);
+            return StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
         }
 
 
