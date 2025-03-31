@@ -31,6 +31,7 @@
     "java": ">=21",
     "architectury": ">=13.0.8",
     "fabric-api": "*",
-    "farmersdelight": "*"
+    "farmersdelight": "*",
+    "lithostitched": "*"
   }
 }
