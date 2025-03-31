@@ -47,6 +47,10 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+	maven {
+		name = "Terraformers"
+		url = "https://maven.terraformersmc.com/"
+	}
 }
 
 dependencies {
@@ -64,6 +68,7 @@ dependencies {
 	modImplementation("vectorwing:FarmersDelight:${fdrf_version}") {
 		exclude(group: "net.fabricmc")
 	}
+	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
 	modImplementation "maven.modrinth:lithostitched:${lithostitched_version}-fabric-1.21"
 	

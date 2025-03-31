@@ -11,11 +11,11 @@
 	"cassiancc"
   ],
   "contact": {
-	"homepage": "https://fabricmc.net/",
-	"sources": "https://github.com/FabricMC/fabric-example-mod"
+	"homepage": "https://github.com/cassiancc/Cooks-Collection-Refabricated",
+	"sources": "https://github.com/cassiancc/Cooks-Collection-Refabricated/issues"
   },
   "license": "ARR",
-  "icon": "assets/cooks_collection/icon.png",
+  "icon": "assets/cookscollection/icon.png",
   "environment": "*",
   "entrypoints": {
 	"main": [
