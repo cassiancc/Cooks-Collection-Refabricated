@@ -20,13 +20,13 @@
       "tag": "c:foods/cooked_mutton"
     },
     {
-      "item": "c:crops/onion"
+      "tag": "c:crops/onion"
     },
     {
       "item": "minecraft:bowl"
     },
     {
-      "item": "c:crops/onion"
+      "tag": "c:crops/onion"
     }
   ],
   "result": {
