@@ -12,9 +12,10 @@
   ],
   "contact": {
 	"homepage": "https://github.com/cassiancc/Cooks-Collection-Refabricated",
-	"sources": "https://github.com/cassiancc/Cooks-Collection-Refabricated/issues"
+	"sources": "https://github.com/cassiancc/Cooks-Collection-Refabricated",
+	"issues": "https://github.com/cassiancc/Cooks-Collection-Refabricated/issues"
   },
-  "license": "ARR",
+  "license": "All Rights Reserved",
   "icon": "assets/cookscollection/icon.png",
   "environment": "*",
   "entrypoints": {
