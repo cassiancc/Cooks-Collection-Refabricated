@@ -80,9 +80,9 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         boolean flag = i == MAX_AGE;
         if (flag) {
             int j = 1 + level.random.nextInt(2);
-            popResource(level, pos, new ItemStack(ModItems.LEMON.get(), j + (flag ? 1 : 0)));
+            popResource(level, pos, new ItemStack(ModItems.LEMON.get(), j + 1));
             level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-            BlockState blockstate = state.setValue(AGE, 1);
+            BlockState blockstate = state.setValue(AGE, 0);
             level.setBlock(pos, blockstate, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
             return InteractionResult.sidedSuccess(level.isClientSide);
@@ -102,7 +102,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
 
     @Override
     public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
-        return blockState.getValue(AGE) < 3;
+        return blockState.getValue(AGE) < MAX_AGE;
     }
 
     public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
@@ -111,6 +111,6 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
 
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         int i = Math.min(MAX_AGE, state.getValue(AGE) + 1);
-        level.setBlock(pos, state.setValue(AGE, Integer.valueOf(i)), 2);
+        level.setBlock(pos, state.setValue(AGE, i), 2);
     }
 }
