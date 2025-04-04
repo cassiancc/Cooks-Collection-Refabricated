@@ -46,14 +46,13 @@ public class CooksCollection
         ModBlockEntities.register(modEventBus);
         ModMenus.register(modEventBus);
         ModRecipes.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         modEventBus.addListener(this::registerScreens);
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        if (FMLEnvironment.dist.isClient())
-            ModSounds.register(modEventBus);
     }
 
     public static ResourceLocation locate(String identifier) {
