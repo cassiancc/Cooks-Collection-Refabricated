@@ -7,6 +7,7 @@ import com.baisylia.cookscollection.recipe.ModRecipes;
 import com.baisylia.cookscollection.recipe.OvenRecipe;
 import com.baisylia.cookscollection.recipe.OvenShapedRecipe;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.fabricmc.fabric.impl.recipe.ingredient.ShapelessMatch;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -35,6 +36,8 @@ import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.refabricated.inventory.ItemStackHandler;
 import vectorwing.farmersdelight.refabricated.inventory.RecipeWrapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.baisylia.cookscollection.block.custom.OvenBlock.LIT;
@@ -157,11 +160,12 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
             setChanged(pLevel, pPos, pState);
         }
 
-        if (hasRecipe(pBlockEntity)) {
+        var recipe = hasRecipe(pBlockEntity);
+        if (recipe != null) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
             if (pBlockEntity.progress > pBlockEntity.maxProgress) {
-                craftItem(pBlockEntity);
+                craftItem(pBlockEntity, recipe);
             }
         } else {
             pBlockEntity.resetProgress();
@@ -170,43 +174,56 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
     }
 
 
-    private static boolean hasRecipe(OvenBlockEntity entity) {
+    private static OvenRecipe hasRecipe(OvenBlockEntity entity) {
         Level level = entity.level;
         BlockPos pos = entity.getBlockPos();
 
         // Check if the oven is fueled (lit)
         if (!isFueled(entity, pos, level)) {
-            return false;
+            return null;
         }
 
+        ArrayList<ItemStack> inputs = new ArrayList<>();
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlotCount());
         for (int i = 0; i < entity.itemHandler.getSlotCount(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+            var stack = entity.itemHandler.getStackInSlot(i);
+            inventory.setItem(i,stack);
+            if (!stack.isEmpty())
+                inputs.add(stack);
+        }
+
+        List<RecipeHolder<OvenRecipe>> allRecipesFor = level.getRecipeManager().getAllRecipesFor(ModRecipes.BAKING.get());
+        for (RecipeHolder<OvenRecipe> ovenRecipeRecipeHolder : allRecipesFor) {
+            OvenRecipe recipe = ovenRecipeRecipeHolder.value();
+            if (ShapelessMatch.isMatch(inputs, recipe.getIngredients())) {
+                entity.maxProgress = recipe.getCookTime();
+                return recipe;
+            }
         }
 
         // Check for OvenShapedRecipe
-        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch =
-                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
+//        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch =
+//                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
 
         // Check for OvenRecipe
 
-        Optional<RecipeHolder<OvenRecipe>> recipeMatch =
-                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
+//        Optional<RecipeHolder<OvenRecipe>> recipeMatch =
+//                level.getRecipeManager().getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
 
 
-        if (shapedMatch.isPresent()) {
-            OvenShapedRecipe recipe = shapedMatch.get().value();
-
-            entity.maxProgress = recipe.getCookTime();
-            return true;
-        }
-        if (recipeMatch.isPresent()) {
-            OvenRecipe recipe = recipeMatch.get().value();
-
-            entity.maxProgress = recipe.getCookTime();
-            return true;
-        }
-        return false;
+//        if (shapedMatch.isPresent()) {
+//            OvenShapedRecipe recipe = shapedMatch.get().value();
+//
+//            entity.maxProgress = recipe.getCookTime();
+//            return true;
+//        }
+//        if (recipeMatch.isPresent()) {
+//            OvenRecipe recipe = recipeMatch.get().value();
+//
+//            entity.maxProgress = recipe.getCookTime();
+//            return true;
+//        }
+        return null;
     }
 
 
@@ -228,18 +245,18 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
         }
     }
 
-    private static void craftItem(OvenBlockEntity entity) {
+    private static void craftItem(OvenBlockEntity entity, OvenRecipe recipe) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlotCount());
         for (int i = 0; i < entity.itemHandler.getSlotCount(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
-        Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
-                .getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
-        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch = level.getRecipeManager()
-                .getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
+//        Optional<RecipeHolder<OvenRecipe>> recipeMatch = level.getRecipeManager()
+//                .getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), level);
+//        Optional<RecipeHolder<OvenShapedRecipe>> shapedMatch = level.getRecipeManager()
+//                .getRecipeFor(ModRecipes.BAKING_SHAPED.get(), new RecipeWrapper(entity.itemHandler), level);
 
-        if (recipeMatch.isPresent() || shapedMatch.isPresent()) {
+//        if (recipeMatch.isPresent() || shapedMatch.isPresent()) {
             for(int i = 0; i < 9; ++i) {
                 ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
                 if (slotStack.getItem().hasCraftingRemainingItem()) {
@@ -256,14 +273,14 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
             }
 
             ItemStack result;
-            if (shapedMatch.isPresent()) {
-                OvenShapedRecipe recipe = shapedMatch.get().value();
+//            if (shapedMatch.isPresent()) {
+//                OvenShapedRecipe recipe = shapedMatch.get().value();
+//                result = recipe.getResultItem(level.registryAccess());
+//            }
+//            else {
+//                OvenRecipe recipe = recipeMatch.get().value();
                 result = recipe.getResultItem(level.registryAccess());
-            }
-            else {
-                OvenRecipe recipe = recipeMatch.get().value();
-                result = recipe.getResultItem(level.registryAccess());
-            }
+//            }
 
 
             inventory.getItem(9).is(result.getItem());
@@ -272,7 +289,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
                     entity.itemHandler.getStackInSlot(9).getCount() + entity.getTheCount(result)));
 
             entity.resetProgress();
-        }
+//        }
     }
     public static void spawnItemEntity(Level level, ItemStack stack, double x, double y, double z, double xMotion, double yMotion, double zMotion) {
         ItemEntity entity = new ItemEntity(level, x, y, z, stack);
