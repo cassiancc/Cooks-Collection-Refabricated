@@ -2,7 +2,7 @@
   "type": "cookscollection:baking",
   "ingredients": [
     {
-      "tag": "forge:milk"
+      "tag": "c:foods/milk"
     },
     {
       "tag": "c:foods/milk"
