@@ -4,6 +4,7 @@ package com.baisylia.cookscollection.block.custom;
 
 import com.baisylia.cookscollection.item.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -81,7 +82,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         boolean flag = i == MAX_AGE;
         if (flag) {
             int j = 1 + level.random.nextInt(2);
-            popResource(level, pos, new ItemStack(ModItems.LEMON.get(), j + 1));
+            popResourceFromFace(level, pos, hitResult.getDirection(), new ItemStack(ModItems.LEMON.get(), j + 1));
             level.playSound((Player)null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
             BlockState blockstate = (BlockState)state.setValue(AGE, 0);
             level.setBlock(pos, blockstate, 2);
