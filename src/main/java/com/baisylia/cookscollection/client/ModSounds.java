@@ -23,6 +23,9 @@ public class ModSounds {
     public static final Supplier<SoundEvent> OVEN_CLOSE = SOUND_EVENTS.register("oven_close",
             () -> SoundEvent.createVariableRangeEvent(locate( "block.oven.close")));
 
+    public static final Supplier<SoundEvent> LEAVES_PICKED = SOUND_EVENTS.register("fruiting_leaves_pick_fruit",
+            () -> SoundEvent.createVariableRangeEvent(locate( "block.fruiting_leaves.pick_fruit")));
+
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
     }

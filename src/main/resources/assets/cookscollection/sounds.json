@@ -25,5 +25,23 @@
 		"cookscollection:block/oven/close3",
 		"cookscollection:block/oven/close4"
 	]
+  },
+  "block.leaves.picked": {
+	"subtitle": "cookscollection.subtitles.leaves.pick_fruit",
+	"sounds": [
+	  {
+		"name": "block.sweet_berry_bush.pick_berries",
+		"type": "event"
+	  }
+	]
+  },
+  "block.fruiting_leaves.pick_fruit": {
+	"sounds": [
+	  {
+		"name": "block.sweet_berry_bush.pick_berries",
+		"type": "event"
+	  }
+	],
+	"subtitle": "cookscollection.subtitles.fruiting_leaves.pick_fruit"
   }
 }

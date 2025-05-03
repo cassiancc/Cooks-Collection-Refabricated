@@ -2,6 +2,7 @@ package com.baisylia.cookscollection.block.custom;
 
 
 
+import com.baisylia.cookscollection.client.ModSounds;
 import com.baisylia.cookscollection.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
@@ -29,28 +31,34 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.CommonHooks;
 
+import java.util.function.Supplier;
+
 public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
     public static final int MAX_AGE = 4;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
+    public Supplier<Item> FRUIT;
 
-    public FruitingLeaves(Properties properties) {
+    public FruitingLeaves(Properties properties, Supplier<Item> itemSupplier) {
         super(properties);
+        this.FRUIT = itemSupplier;
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(AGE, Integer.valueOf(0))
-                .setValue(DISTANCE, Integer.valueOf(7))
-                .setValue(PERSISTENT, Boolean.valueOf(false))
-                .setValue(WATERLOGGED, Boolean.valueOf(false)));
-
+                .setValue(AGE, 0)
+                .setValue(DISTANCE, 7)
+                .setValue(PERSISTENT, Boolean.FALSE)
+                .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
-    //public ItemStack getCloneItemStack(BlockGetter p_57256_, BlockPos p_57257_, BlockState p_57258_) {
-    //    return new ItemStack(ModItems.AVOCADO.get());
-    //}
+    @Override
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos pos, BlockState state) {
+        return new ItemStack(FRUIT.get());
+    }
 
+    @Override
     public boolean isRandomlyTicking(BlockState state) {
         return state.getValue(AGE) < MAX_AGE || state.getValue(DISTANCE) == 7 && !state.getValue(PERSISTENT);
     }
 
+    @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand) {
         if (this.decaying(state)) {
             dropResources(state, world, pos);
@@ -59,7 +67,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         else {
             int age = state.getValue(AGE);
             if (age < MAX_AGE) {
-                BlockState blockstate = (BlockState)state.setValue(AGE, age + 1);
+                BlockState blockstate = state.setValue(AGE, age + 1);
                 world.setBlock(pos, blockstate, 2);
                 CommonHooks.fireCropGrowPost(world, pos, state);
                 world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(blockstate));
@@ -67,6 +75,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         }
     }
 
+    @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         int i = state.getValue(AGE);
         boolean flag = i == MAX_AGE;
@@ -77,14 +86,15 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         }
     }
 
+    @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        int i = (Integer)state.getValue(AGE);
+        int i = state.getValue(AGE);
         boolean flag = i == MAX_AGE;
         if (flag) {
             int j = 1 + level.random.nextInt(2);
-            popResourceFromFace(level, pos, hitResult.getDirection(), new ItemStack(ModItems.LEMON.get(), j + 1));
-            level.playSound((Player)null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-            BlockState blockstate = (BlockState)state.setValue(AGE, 0);
+            popResourceFromFace(level, pos, hitResult.getDirection(), new ItemStack(FRUIT.get(), j + 1));
+            level.playSound(player, pos, ModSounds.LEAVES_PICKED.get(), SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
+            BlockState blockstate = state.setValue(AGE, 0);
             level.setBlock(pos, blockstate, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
             return InteractionResult.sidedSuccess(level.isClientSide);
@@ -93,13 +103,10 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         }
     }
 
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> state) {
         state.add(AGE);
         state.add(DISTANCE, PERSISTENT, WATERLOGGED);
-    }
-
-    public boolean isValidBonemealTarget(BlockGetter p_57260_, BlockPos p_57261_, BlockState p_57262_, boolean p_57263_) {
-        return p_57262_.getValue(AGE) < MAX_AGE;
     }
 
     @Override
@@ -107,12 +114,14 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
         return blockState.getValue(AGE) < MAX_AGE;
     }
 
-    public boolean isBonemealSuccess(Level p_222558_, RandomSource p_222559_, BlockPos p_222560_, BlockState p_222561_) {
+    @Override
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void performBonemeal(ServerLevel p_222553_, RandomSource p_222554_, BlockPos p_222555_, BlockState p_222556_) {
-        int i = Math.min(MAX_AGE, p_222556_.getValue(AGE) + 1);
-        p_222553_.setBlock(p_222555_, p_222556_.setValue(AGE, Integer.valueOf(i)), 2);
+    @Override
+    public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos pos, BlockState state) {
+        int i = Math.min(MAX_AGE, state.getValue(AGE) + 1);
+        serverLevel.setBlock(pos, state.setValue(AGE, Integer.valueOf(i)), 2);
     }
 }
