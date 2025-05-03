@@ -28,7 +28,7 @@ public class ModBlocks {
             () -> new LeavesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
 
     public static final Supplier<Block> FRUITING_LEMON_LEAVES = registerBlock("fruiting_lemon_leaves",
-            () -> new FruitingLeaves(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES)));
+            () -> new FruitingLeaves(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES), ModItems.LEMON));
 
     public static final Supplier<Block> RUSTIC_LOAF = registerBlock("rustic_loaf",
             () -> new RusticLoafBlock(BlockBehaviour.Properties.ofFullCopy(vectorwing.farmersdelight.common.registry.ModBlocks.APPLE_PIE.get()).noOcclusion(),
