@@ -3,26 +3,21 @@ package com.baisylia.cookscollection.block.custom;
 
 
 import com.baisylia.cookscollection.client.ModSounds;
-import com.baisylia.cookscollection.item.ModItems;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,13 +27,13 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.util.function.Supplier;
 
-public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
+public class FruitingLeaves extends UntintedParticleLeavesBlock implements BonemealableBlock {
     public static final int MAX_AGE = 4;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_4;
     public Supplier<Item> FRUIT;
 
     public FruitingLeaves(Properties properties, Supplier<Item> itemSupplier) {
-        super(properties);
+        super(0.01f, ColorParticleOption.create(ParticleTypes.TINTED_LEAVES, -9399763), properties);
         this.FRUIT = itemSupplier;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(AGE, 0)
@@ -48,7 +43,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos pos, BlockState state) {
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos pos, BlockState state, boolean bl) {
         return new ItemStack(FRUIT.get());
     }
 
@@ -74,11 +69,11 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         int i = state.getValue(AGE);
         boolean flag = i == MAX_AGE;
         if (!flag && player.getItemInHand(hand).is(Items.BONE_MEAL)) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return InteractionResult.PASS;
         } else {
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         }
@@ -95,7 +90,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
             BlockState blockstate = state.setValue(AGE, 0);
             level.setBlock(pos, blockstate, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            return InteractionResult.SUCCESS;
         } else {
             return super.useWithoutItem(state, level, pos, player, hitResult);
         }

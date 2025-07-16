@@ -14,6 +14,9 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import vectorwing.farmersdelight.refabricated.inventory.RecipeWrapper;
 
+import java.util.List;
+import java.util.Optional;
+
 public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
 
     final ItemStack output;
@@ -27,17 +30,16 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<RecipeWrapper>> getSerializer() {
         return ModRecipes.BAKING_SHAPED_SERIALIZER.get();
     }
 
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
+    public ItemStack getResultItem() {
         return output.copy();
     }
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
+//    @Override
+    public List<Optional<Ingredient>> getIngredients() {
         return pattern.ingredients();
     }
 
@@ -103,7 +105,7 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
                     return false;
                 }
 
-                Ingredient recipeIngredient = this.pattern.ingredients().get(i + j * this.getWidth());
+                Ingredient recipeIngredient = this.pattern.ingredients().get(i + j * this.getWidth()).get();
                 ItemStack gridStack = pContainer.getItem(gridX + gridY * 3); // Use a fixed grid size of 3x3
 
                 // Check if the ingredient matches the item in the crafting grid
@@ -133,17 +135,22 @@ public class OvenShapedRecipe implements Recipe<RecipeWrapper> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
-        return true;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<RecipeWrapper>> getType() {
         return ModRecipes.BAKING_SHAPED.get();
     }
 
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
+    }
+
     public boolean isIncomplete() {
-        NonNullList<Ingredient> nonnulllist = this.getIngredients();
+        List<Optional<Ingredient>> nonnulllist = this.getIngredients();
         return nonnulllist.isEmpty() || nonnulllist.stream().filter((ingredient) -> !ingredient.isEmpty()).anyMatch((ingredient) -> true);
     }
 

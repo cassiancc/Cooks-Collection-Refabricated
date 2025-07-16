@@ -6,22 +6,22 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.pathfinder.PathComputationType;
@@ -34,7 +34,7 @@ import vectorwing.farmersdelight.common.utility.ItemUtils;
 import java.util.function.Supplier;
 
 public class RusticLoafBlock extends Block {
-    public static final DirectionProperty FACING;
+    public static final EnumProperty<Direction> FACING;
     public static final IntegerProperty BITES;
     protected static final VoxelShape SHAPE;
     public final Supplier<Item> pieSlice;
@@ -79,8 +79,8 @@ public class RusticLoafBlock extends Block {
         return (BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
     }
 
-    public ItemInteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        return heldStack.is(ModTags.KNIVES) ? this.cutSlice(level, pos, state, player) : ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    public InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return heldStack.is(ModTags.KNIVES) ? this.cutSlice(level, pos, state, player) : InteractionResult.PASS;
     }
 
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
@@ -105,12 +105,6 @@ public class RusticLoafBlock extends Block {
             FoodProperties sliceFood = sliceStack.getComponents().get(DataComponents.FOOD);
             if (sliceFood != null) {
                 playerIn.getFoodData().eat(sliceFood);
-
-                for(FoodProperties.PossibleEffect effect : sliceFood.effects()) {
-                    if (!level.isClientSide && effect != null && level.random.nextFloat() < effect.probability()) {
-                        playerIn.addEffect(effect.effect());
-                    }
-                }
             }
 
             int bites = state.getValue(BITES);
@@ -120,12 +114,12 @@ public class RusticLoafBlock extends Block {
                 level.removeBlock(pos, false);
             }
 
-            level.playSound((Player)null, pos, SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.8F, 0.8F);
+            level.playSound((Player)null, pos, SoundEvents.GENERIC_EAT.value(), SoundSource.PLAYERS, 0.8F, 0.8F);
             return InteractionResult.SUCCESS;
         }
     }
 
-    protected ItemInteractionResult cutSlice(Level level, BlockPos pos, BlockState state, Player player) {
+    protected InteractionResult cutSlice(Level level, BlockPos pos, BlockState state, Player player) {
         int bites = (Integer)state.getValue(BITES);
         if (bites < this.getMaxBites() - 1) {
             level.setBlock(pos, (BlockState)state.setValue(BITES, bites + 1), 3);
@@ -136,11 +130,11 @@ public class RusticLoafBlock extends Block {
         Direction direction = player.getDirection().getOpposite();
         ItemUtils.spawnItemEntity(level, this.getPieSliceItem(), (double)pos.getX() + (double)0.5F, (double)pos.getY() + 0.3, (double)pos.getZ() + (double)0.5F, (double)direction.getStepX() * 0.15, 0.05, (double)direction.getStepZ() * 0.15);
         level.playSound((Player)null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+    protected BlockState updateShape(BlockState stateIn, LevelReader level, ScheduledTickAccess scheduledTickAccess, BlockPos currentPos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource randomSource) {
+        return facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, level, scheduledTickAccess, currentPos, facing, facingPos, facingState, randomSource);
     }
 
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {

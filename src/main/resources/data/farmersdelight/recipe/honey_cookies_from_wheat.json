@@ -1,22 +1,14 @@
 {
-  "type": "cookscollection:baking",
-  "ingredients": [
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:honey_bottle"
-    },
-    {
-      "item": "minecraft:sugar"
-    }
-  ],
-  "result": {
-    "id": "farmersdelight:honey_cookie",
-    "count": 8
-  },
-  "cookingtime": 200
+ "type": "cookscollection:baking",
+ "ingredients": [
+  "minecraft:wheat",
+  "minecraft:wheat",
+  "minecraft:honey_bottle",
+  "minecraft:sugar"
+ ],
+ "result": {
+  "id": "farmersdelight:honey_cookie",
+  "count": 8
+ },
+ "cookingtime": 200
 }

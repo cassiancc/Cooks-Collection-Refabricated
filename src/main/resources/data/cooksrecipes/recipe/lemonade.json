@@ -3,15 +3,9 @@
   "cookingtime": 400,
   "experience": 2.0,
   "ingredients": [
-    {
-      "item": "cookscollection:lemon"
-    },
-    {
-      "item": "cookscollection:lemon"
-    },
-    {
-      "item": "minecraft:sugar"
-    }
+    "cookscollection:lemon",
+    "cookscollection:lemon",
+    "minecraft:sugar"
   ],
   "recipe_book_tab": "drinks",
   "result": {

@@ -2,33 +2,15 @@
   "type": "cookscollection:baking",
   "cooktime": 600,
   "ingredients": [
-    {
-      "item": "farmersdelight:cooked_bacon"
-    },
-    {
-      "item": "farmersdelight:cabbage_leaf"
-    },
-	{
-      "item": "farmersdelight:cooked_bacon"
-    },
-	{
-      "tag": "c:milk"
-    },
-	{
-      "item": "brewinandchewin:flaxen_cheese_wedge"
-    },
-	{
-      "tag": "c:milk"
-    },
-	{
-      "tag": "c:eggs"
-    },
-	{
-      "item": "farmersdelight:pie_crust"
-    },
-	{
-      "tag": "c:eggs"
-    }
+    "farmersdelight:cooked_bacon",
+    "farmersdelight:cabbage_leaf",
+    "farmersdelight:cooked_bacon",
+    "#c:milk",
+    "brewinandchewin:flaxen_cheese_wedge",
+    "#c:milk",
+    "#c:eggs",
+    "farmersdelight:pie_crust",
+    "#c:eggs"
   ],
   "result": {
     "id": "brewinandchewin:quiche"

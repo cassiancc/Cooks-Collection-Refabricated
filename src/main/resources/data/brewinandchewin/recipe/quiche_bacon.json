@@ -2,33 +2,15 @@
   "type": "cookscollection:baking",
   "cooktime": 600,
   "ingredients": [
-    {
-      "item": "minecraft:brown_mushroom"
-    },
-    {
-      "item": "farmersdelight:cabbage_leaf"
-    },
-	{
-      "item": "minecraft:brown_mushroom"
-    },
-	{
-      "tag": "c:milk"
-    },
-	{
-      "item": "brewinandchewin:flaxen_cheese_wedge"
-    },
-	{
-      "tag": "c:milk"
-    },
-	{
-      "tag": "c:eggs"
-    },
-	{
-      "item": "farmersdelight:pie_crust"
-    },
-	{
-      "tag": "c:eggs"
-    }
+    "minecraft:brown_mushroom",
+    "farmersdelight:cabbage_leaf",
+    "minecraft:brown_mushroom",
+    "#c:milk",
+    "brewinandchewin:flaxen_cheese_wedge",
+    "#c:milk",
+    "#c:eggs",
+    "farmersdelight:pie_crust",
+    "#c:eggs"
   ],
   "result": {
     "id": "brewinandchewin:quiche"

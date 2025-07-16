@@ -1,19 +1,13 @@
 {
-  "type": "cookscollection:baking",
-  "ingredients": [
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:wheat"
-    }
-  ],
-  "result": {
-    "id": "minecraft:bread",
-    "count": 1
-  },
-  "cookingtime": 200
+ "type": "cookscollection:baking",
+ "ingredients": [
+  "minecraft:wheat",
+  "minecraft:wheat",
+  "minecraft:wheat"
+ ],
+ "result": {
+  "id": "minecraft:bread",
+  "count": 1
+ },
+ "cookingtime": 200
 }

@@ -8,7 +8,7 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.util.random.SimpleWeightedRandomList;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
@@ -44,7 +44,7 @@ public class ModConfiguredFeatures {
                 BlockStateProvider.simple(ModBlocks.LEMON_LOG.get()),
                 //new LemonTrunkPlacer(5, 2, 2),
                 new StraightTrunkPlacer(5, 2, 2),
-                new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(ModBlocks.LEMON_LEAVES.get().defaultBlockState(),
+                new WeightedStateProvider(WeightedList.<BlockState>builder().add(ModBlocks.LEMON_LEAVES.get().defaultBlockState(),
                         8).add(ModBlocks.FRUITING_LEMON_LEAVES.get().defaultBlockState().setValue(FruitingLeaves.AGE, 4), 1)),
                 //new MegaJungleFoliagePlacer(ConstantInt.of(0), ConstantInt.of(0), 2),
                 new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 3),

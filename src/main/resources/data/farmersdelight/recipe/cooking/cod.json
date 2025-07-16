@@ -1,19 +1,13 @@
 {
-  "type": "cookscollection:baking",
-  "ingredients": [
-    {
-      "item": "minecraft:cod"
-    },
-    {
-      "item": "minecraft:cod"
-    },
-    {
-      "item": "minecraft:cod"
-    }
-  ],
-  "result": {
-    "id": "minecraft:cooked_cod",
-    "count": 3
-  },
-  "cookingtime": 200
+ "type": "cookscollection:baking",
+ "ingredients": [
+  "minecraft:cod",
+  "minecraft:cod",
+  "minecraft:cod"
+ ],
+ "result": {
+  "id": "minecraft:cooked_cod",
+  "count": 3
+ },
+ "cookingtime": 200
 }

@@ -14,6 +14,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -26,6 +27,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
@@ -126,10 +128,10 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompound("inventory"));
-        progress = tag.getInt("oven.progress");
-        litTime = tag.getInt("oven.lit_time");
-        maxProgress = tag.getInt("oven.max_progress");
+        itemHandler.deserializeNBT(registries, tag.getCompoundOrEmpty("inventory"));
+        progress = tag.getIntOr("oven.progress", 0);
+        litTime = tag.getIntOr("oven.lit_time", 0);
+        maxProgress = tag.getIntOr("oven.max_progress", 0);
     }
 
     @Override
@@ -191,13 +193,11 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
             if (!stack.isEmpty())
                 inputs.add(stack);
         }
-
-        List<RecipeHolder<OvenRecipe>> allRecipesFor = level.getRecipeManager().getAllRecipesFor(ModRecipes.BAKING.get());
-        for (RecipeHolder<OvenRecipe> ovenRecipeRecipeHolder : allRecipesFor) {
-            OvenRecipe recipe = ovenRecipeRecipeHolder.value();
-            if (ShapelessMatch.isMatch(inputs, recipe.getIngredients())) {
-                entity.maxProgress = recipe.getCookTime();
-                return recipe;
+        if (level instanceof ServerLevel serverLevel) {
+            Optional<RecipeHolder<OvenRecipe>> recipe = serverLevel.recipeAccess().getRecipeFor(ModRecipes.BAKING.get(), new RecipeWrapper(entity.itemHandler), serverLevel);
+            if (recipe.isPresent()) {
+                entity.maxProgress = recipe.get().value().getCookTime();
+                return recipe.get().value();
             }
         }
 
@@ -259,12 +259,12 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
 //        if (recipeMatch.isPresent() || shapedMatch.isPresent()) {
             for(int i = 0; i < 9; ++i) {
                 ItemStack slotStack = entity.itemHandler.getStackInSlot(i);
-                if (slotStack.getItem().hasCraftingRemainingItem()) {
+                if (!slotStack.getItem().getCraftingRemainder().equals(ItemStack.EMPTY)) {
                     Direction direction = entity.getBlockState().getValue(OvenBlock.FACING).getCounterClockWise();
                     double x = (double)entity.worldPosition.getX() + 0.5 + (double)direction.getStepX() * 0.25;
                     double y = (double)entity.worldPosition.getY() + 0.7;
                     double z = (double)entity.worldPosition.getZ() + 0.5 + (double)direction.getStepZ() * 0.25;
-                    spawnItemEntity(entity.level, entity.itemHandler.getStackInSlot(i).getItem().getCraftingRemainingItem().getDefaultInstance(), x, y, z, (double)((float)direction.getStepX() * 0.08F), 0.25, (double)((float)direction.getStepZ() * 0.08F));
+                    spawnItemEntity(entity.level, entity.itemHandler.getStackInSlot(i).getItem().getCraftingRemainder(), x, y, z, (double)((float)direction.getStepX() * 0.08F), 0.25, (double)((float)direction.getStepZ() * 0.08F));
                 }
             }
 
@@ -279,7 +279,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
 //            }
 //            else {
 //                OvenRecipe recipe = recipeMatch.get().value();
-                result = recipe.getResultItem(level.registryAccess());
+                result = recipe.getResultItem();
 //            }
 
 
@@ -332,7 +332,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
     }
 
     void playSound(BlockState state, SoundEvent sound) {
-        Vec3i normal = state.getValue(OvenBlock.FACING).getNormal();
+        Vec3i normal = state.getValue(OvenBlock.FACING).getUnitVec3i();
         double x = (double)this.worldPosition.getX() + (double)0.5F + (double)normal.getX() / (double)2.0F;
         double y = (double)this.worldPosition.getY() + (double)0.5F + (double)normal.getY() / (double)2.0F;
         double z = (double)this.worldPosition.getZ() + (double)0.5F + (double)normal.getZ() / (double)2.0F;

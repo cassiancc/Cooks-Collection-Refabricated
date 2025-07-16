@@ -1,9 +1,7 @@
 {
   "type": "farmersdelight:cutting",
   "ingredients": [
-    {
-      "item": "cookscollection:rustic_loaf"
-    }
+    "cookscollection:rustic_loaf"
   ],
   "result": [
     {

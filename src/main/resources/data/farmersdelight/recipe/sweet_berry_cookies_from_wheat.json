@@ -1,22 +1,14 @@
 {
-  "type": "cookscollection:baking",
-  "ingredients": [
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:wheat"
-    },
-    {
-      "item": "minecraft:sweet_berries"
-    },
-    {
-      "item": "minecraft:sugar"
-    }
-  ],
-  "result": {
-    "id": "farmersdelight:sweet_berry_cookie",
-    "count": 8
-  },
-  "cookingtime": 200
+ "type": "cookscollection:baking",
+ "ingredients": [
+  "minecraft:wheat",
+  "minecraft:wheat",
+  "minecraft:sweet_berries",
+  "minecraft:sugar"
+ ],
+ "result": {
+  "id": "farmersdelight:sweet_berry_cookie",
+  "count": 8
+ },
+ "cookingtime": 200
 }

@@ -1,9 +1,7 @@
 {
   "type": "farmersdelight:cutting",
   "ingredients": [
-    {
-      "item": "cookscollection:lemon_wood"
-    }
+    "cookscollection:lemon_wood"
   ],
   "result": [
     {

@@ -1,17 +1,15 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "group": "bark",
-  "pattern": [
-    "##",
-    "##"
-  ],
-  "key": {
-    "#": {
-      "item": "cookscollection:lemon_log"
-    }
-  },
-  "result": {
-    "count": 3,
-    "id": "cookscollection:lemon_wood"
-  }
+ "type": "minecraft:crafting_shaped",
+ "group": "bark",
+ "pattern": [
+  "##",
+  "##"
+ ],
+ "key": {
+  "#": "cookscollection:lemon_log"
+ },
+ "result": {
+  "count": 3,
+  "id": "cookscollection:lemon_wood"
+ }
 }

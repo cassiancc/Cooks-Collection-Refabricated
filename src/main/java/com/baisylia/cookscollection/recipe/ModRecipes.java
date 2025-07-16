@@ -13,8 +13,8 @@ public class ModRecipes {
     public static final Supplier<RecipeType<OvenRecipe>> BAKING = RegUtils.regRecipe("baking", () -> registerRecipeType("baking"));
     public static final Supplier<RecipeType<OvenShapedRecipe>> BAKING_SHAPED = RegUtils.regRecipe("baking_shaped", () -> registerRecipeType("baking_shaped"));
 
-    public static final Supplier<RecipeSerializer<?>> BAKING_SERIALIZER = RegUtils.regRecipeSerializer("baking", OvenRecipe.Serializer::new);
-    public static final Supplier<RecipeSerializer<?>> BAKING_SHAPED_SERIALIZER = RegUtils.regRecipeSerializer("baking_shaped", OvenShapedRecipe.Serializer::new);
+    public static final Supplier<RecipeSerializer<OvenRecipe>> BAKING_SERIALIZER = RegUtils.regRecipeSerializer("baking", OvenRecipe.Serializer::new);
+    public static final Supplier<RecipeSerializer<OvenShapedRecipe>> BAKING_SHAPED_SERIALIZER = RegUtils.regRecipeSerializer("baking_shaped", OvenShapedRecipe.Serializer::new);
 
     public static <T extends Recipe<?>> RecipeType<T> registerRecipeType(final String identifier) {
         return new RecipeType<T>() {

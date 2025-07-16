@@ -5,7 +5,7 @@ import com.baisylia.cookscollection.block.ModBlocks;
 import com.baisylia.cookscollection.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
-import net.fabricmc.fabric.api.registry.FuelRegistry;
+import net.fabricmc.fabric.api.registry.FuelRegistryEvents;
 
 public final class CooksCollectionFabric implements ModInitializer {
     @Override
@@ -18,8 +18,10 @@ public final class CooksCollectionFabric implements ModInitializer {
         CooksCollection.init();
         CompostingChanceRegistry.INSTANCE.add(ModItems.FRIED_POTATO.get(), 0.45f);
         CompostingChanceRegistry.INSTANCE.add(ModItems.LEMON.get(), 0.25f);
-        FuelRegistry.INSTANCE.add(ModBlocks.LEMON_LOG.get(), 50);
-        FuelRegistry.INSTANCE.add(ModBlocks.LEMON_SAPLING.get(), 50);
-        FuelRegistry.INSTANCE.add(ModBlocks.LEMON_WOOD.get(), 50);
+        FuelRegistryEvents.BUILD.register((builder, context)->{
+            builder.add(ModBlocks.LEMON_LOG.get(), 50);
+            builder.add(ModBlocks.LEMON_SAPLING.get(), 50);
+            builder.add(ModBlocks.LEMON_WOOD.get(), 50);
+        });
     }
 }

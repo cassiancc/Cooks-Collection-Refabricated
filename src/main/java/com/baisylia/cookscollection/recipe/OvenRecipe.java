@@ -34,7 +34,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
         return this.inputItems;
     }
 
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
+    public ItemStack getResultItem() {
         return this.output;
     }
 
@@ -71,12 +71,22 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
         return width * height >= this.inputItems.size();
     }
 
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends Recipe<RecipeWrapper>> getSerializer() {
         return ModRecipes.BAKING_SERIALIZER.get();
     }
 
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<RecipeWrapper>> getType() {
         return ModRecipes.BAKING.get();
+    }
+
+    @Override
+    public PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return null;
     }
 
     public ItemStack getToastSymbol() {
@@ -111,7 +121,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
 
         private static final MapCodec<OvenRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
 
-        Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").xmap(ingredients -> {
+        Ingredient.CODEC.listOf().fieldOf("ingredients").xmap(ingredients -> {
                     NonNullList<Ingredient> nonNullList = NonNullList.create();
                     nonNullList.addAll(ingredients);
                     return nonNullList;
@@ -132,7 +142,7 @@ public class OvenRecipe implements Recipe<RecipeWrapper> {
 
         private static OvenRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
             int i = buffer.readVarInt();
-            NonNullList<Ingredient> inputItemsIn = NonNullList.withSize(i, Ingredient.EMPTY);
+            NonNullList<Ingredient> inputItemsIn = NonNullList.withSize(i, Ingredient.of());
             inputItemsIn.replaceAll((ignored) -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
             ItemStack outputIn = ItemStack.STREAM_CODEC.decode(buffer);
             int cookTimeIn = buffer.readVarInt();

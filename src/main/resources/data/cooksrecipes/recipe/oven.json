@@ -1,24 +1,18 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "group": "bark",
-  "pattern": [
-    "BBB",
-    "B B",
-    "SiS"
-  ],
-  "key": {
-    "B": {
-      "item": "minecraft:bricks"
-    },
-    "S": {
-      "item": "minecraft:stone_bricks"
-    },
-    "i": {
-      "tag": "c:ingots/iron"
-    }
-  },
-  "result": {
-    "count": 1,
-    "id": "cookscollection:oven"
-  }
+ "type": "minecraft:crafting_shaped",
+ "group": "bark",
+ "pattern": [
+  "BBB",
+  "B B",
+  "SiS"
+ ],
+ "key": {
+  "B": "minecraft:bricks",
+  "S": "minecraft:stone_bricks",
+  "i": "#c:ingots/iron"
+ },
+ "result": {
+  "count": 1,
+  "id": "cookscollection:oven"
+ }
 }

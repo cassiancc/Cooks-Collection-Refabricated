@@ -1,19 +1,13 @@
 {
-  "type": "cookscollection:baking",
-  "ingredients": [
-    {
-      "item": "farmersdelight:mutton_chops"
-    },
-    {
-      "item": "farmersdelight:mutton_chops"
-    },
-    {
-      "item": "farmersdelight:mutton_chops"
-    }
-  ],
-  "result": {
-    "id": "farmersdelight:cooked_mutton_chops",
-    "count": 3
-  },
-  "cookingtime": 200
+ "type": "cookscollection:baking",
+ "ingredients": [
+  "farmersdelight:mutton_chops",
+  "farmersdelight:mutton_chops",
+  "farmersdelight:mutton_chops"
+ ],
+ "result": {
+  "id": "farmersdelight:cooked_mutton_chops",
+  "count": 3
+ },
+ "cookingtime": 200
 }
