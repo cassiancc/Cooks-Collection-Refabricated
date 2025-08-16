@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.CommonHooks;
 
 import java.util.function.Supplier;
 
@@ -68,6 +69,7 @@ public class FruitingLeaves extends LeavesBlock implements BonemealableBlock {
             if (age < MAX_AGE) {
                 BlockState blockstate = state.setValue(AGE, age + 1);
                 world.setBlock(pos, blockstate, 2);
+                CommonHooks.fireCropGrowPost(world, pos, state);
                 world.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(blockstate));
             }
         }

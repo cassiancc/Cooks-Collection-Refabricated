@@ -15,7 +15,7 @@
       },
       {
         "state": {
-          "Name": "cookscollection:salted_pointed_dripstone",
+          "Name": "cookscollection:salted_dripstone_block",
           "Properties": {
             "thickness": "tip",
             "vertical_direction": "up",
