@@ -19,20 +19,14 @@ public class CooksCollection
 
     public static void init()
     {
-        modEventBus.addListener(this::commonSetup);
 
-        ModCreativeModeTabs.register(modEventBus);
-        ModItems.register(modEventBus);
-        ModBlocks.register(modEventBus);
-        ModBlockEntities.register(modEventBus);
-        ModMenus.register(modEventBus);
-        ModRecipes.register(modEventBus);
-        ModSounds.register(modEventBus);
-
-        NeoForge.EVENT_BUS.register(this);
-        modEventBus.addListener(this::addCreative);
-        modEventBus.addListener(this::registerScreens);
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        ModCreativeModeTabs.register();
+        ModItems.register();
+        ModBlocks.register();
+        ModBlockEntities.register();
+        ModMenus.register();
+        ModRecipes.register();
+        ModSounds.register();
 
     }
 

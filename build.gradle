@@ -74,9 +74,8 @@ dependencies {
 	}
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
-	modImplementation "maven.modrinth:lithostitched:${lithostitched_version}-fabric-1.21"
-	
-}
+	modImplementation(include("maven.modrinth:lithostitched:${lithostitched_version}-fabric-1.21"))
+	modImplementation("umpaz.brewinandchewin:BrewinAndChewin-fabric:${bnc_version}+${minecraft_version}")}
 
 processResources {
 	inputs.property "version", project.version
