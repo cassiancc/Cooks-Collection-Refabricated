@@ -33,6 +33,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.refabricated.inventory.ItemStackHandler;
@@ -126,21 +128,21 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        itemHandler.deserializeNBT(registries, tag.getCompoundOrEmpty("inventory"));
+    public void loadAdditional(ValueInput tag) {
+        super.loadAdditional(tag);
+        itemHandler.deserialize(tag);
         progress = tag.getIntOr("oven.progress", 0);
         litTime = tag.getIntOr("oven.lit_time", 0);
         maxProgress = tag.getIntOr("oven.max_progress", 0);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.put("inventory", itemHandler.serializeNBT(registries));
+    public void saveAdditional(ValueOutput tag) {
+        itemHandler.serialize(tag);
         tag.putInt("oven.progress", progress);
         tag.putInt("oven.lit_time", litTime);
         tag.putInt("oven.max_progress", maxProgress);
-        super.saveAdditional(tag, registries);
+        super.saveAdditional(tag);
     }
 
     public void drops() {
@@ -269,7 +271,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
             }
 
             for (int i = 0; i < 9; ++i) {
-                entity.itemHandler.removeItem(i, 1, false);
+                entity.itemHandler.removeItem(i, 1);
             }
 
             ItemStack result;

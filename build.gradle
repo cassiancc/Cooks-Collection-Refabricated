@@ -22,7 +22,7 @@ repositories {
 	// for more information about repositories.
 	maven {
 		name = "Greenhouse Maven"
-		url = 'https://repo.greenhouse.house/releases/'
+		url = 'https://maven.greenhouse.lgbt/releases/'
 	}
 	maven {
 		url "https://jitpack.io/" // Fabric ASM
@@ -80,7 +80,7 @@ dependencies {
 	}
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
-	modImplementation "maven.modrinth:lithostitched:${lithostitched_version}-fabric-1.21.5"
+	modImplementation "maven.modrinth:lithostitched:${lithostitched_version}-fabric-1.21.6"
 	
 }
 
