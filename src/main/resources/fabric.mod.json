@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "cooks_collection",
+  "id": "cookscollection",
   "version": "${version}",
   "name": "Cook's Collection",
   "description": "A Farmer's Delight addon containing various additions.",
@@ -31,7 +31,7 @@
   },
   "depends": {
 	"fabricloader": ">=0.16.10",
-	"minecraft": "~1.21.1",
+	"minecraft": "~1.21.8",
 	"java": ">=21",
 	"fabric-api": "*",
 	"farmersdelight": "*",

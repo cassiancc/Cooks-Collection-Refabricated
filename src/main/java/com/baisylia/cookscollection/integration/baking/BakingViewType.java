@@ -42,15 +42,17 @@ public class BakingViewType implements IEivRecipeViewType {
 
     @Override
     public void placeSlots(RecipeViewMenu.SlotDefinition builder) {
-        builder.addItemSlot(0, 2, 4);
-        builder.addItemSlot(1, 20, 4);
-        builder.addItemSlot(2, 38, 4);
-        builder.addItemSlot(3, 2, 22);
-        builder.addItemSlot(4, 20, 22);
-        builder.addItemSlot(5, 38, 22);
-        builder.addItemSlot(6, 2, 40);
-        builder.addItemSlot(7, 20, 40);
-        builder.addItemSlot(8, 38, 40);
+        //ingredients
+        builder.addItemSlot(0, 2, 3);
+        builder.addItemSlot(1, 20, 3);
+        builder.addItemSlot(2, 38, 3);
+        builder.addItemSlot(3, 2, 21);
+        builder.addItemSlot(4, 20, 21);
+        builder.addItemSlot(5, 38, 21);
+        builder.addItemSlot(6, 2, 39);
+        builder.addItemSlot(7, 20, 39);
+        builder.addItemSlot(8, 38, 39);
+        //output
         builder.addItemSlot(9, 93, 22);
     }
 
