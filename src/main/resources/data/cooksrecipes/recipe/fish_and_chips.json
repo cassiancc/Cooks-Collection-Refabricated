@@ -2,7 +2,7 @@
  "type": "minecraft:crafting_shapeless",
  "ingredients": [
   "cookscollection:fried_potato",
-  "#c:cooked_fishes",
+  "#c:foods/cooked_fishes",
   "minecraft:bowl",
   "#c:crops/onion"
  ],

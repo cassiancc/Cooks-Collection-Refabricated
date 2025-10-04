@@ -11,5 +11,13 @@
   ],
   "result": {
     "id": "brewinandchewin:horror_lasagna"
-  }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "brewinandchewin"
+      ]
+    }
+  ]
 }

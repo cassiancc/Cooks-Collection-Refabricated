@@ -1,3 +1,4 @@
+
 {
   "type": "cookscollection:baking",
   "cooktime": 600,
@@ -5,14 +6,22 @@
     "farmersdelight:cooked_bacon",
     "farmersdelight:cabbage_leaf",
     "farmersdelight:cooked_bacon",
-    "#c:milk",
+    "#c:foods/milk",
     "brewinandchewin:flaxen_cheese_wedge",
-    "#c:milk",
+    "#c:foods/milk",
     "#c:eggs",
     "farmersdelight:pie_crust",
     "#c:eggs"
   ],
   "result": {
     "id": "brewinandchewin:quiche"
-  }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "brewinandchewin"
+      ]
+    }
+  ]
 }

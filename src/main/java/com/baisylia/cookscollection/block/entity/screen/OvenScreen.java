@@ -22,16 +22,16 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
         int y = (height - imageHeight) / 2;
 
         // Render the background texture
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, 0,0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, imageWidth, imageHeight, 256, 256);
 
         // Render progress bar if crafting
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 90, y + 35, 176, 14, menu.getScaledProgress(), 17, imageWidth, imageHeight);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 90, y + 35, 176, 14, menu.getScaledProgress(), 17, 256, 256);
         }
 
         // Render fuel bar if the oven is fueled
         if (menu.isFueled()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 93, y + 55, 176, 32, 17, 15, imageWidth, imageHeight);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 93, y + 55, 176, 32, 17, 15, 256, 256);
         }
     }
 
@@ -48,16 +48,16 @@ public class OvenScreen extends AbstractContainerScreen<OvenMenu> {
 
     protected void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         // Draw the background texture
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, 0,0, imageWidth, imageHeight);
+        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2, (height - imageHeight) / 2, 0, 0, imageWidth, imageHeight, 256, 256);
 
         // Check and render the crafting progress
         if (menu.isCrafting()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2 + 90, (height - imageHeight) / 2 + 35, 176, 14, menu.getScaledProgress(), 17, 0, imageWidth, imageHeight);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2 + 90, (height - imageHeight) / 2 + 35, 176, 14, menu.getScaledProgress(), 17, 256, 256);
         }
 
         // Check and render the oven fuel status
         if (menu.isFueled()) {
-            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2 + 93, (height - imageHeight) / 2 + 55, 176, 32, 17, 15, 0, imageWidth, imageHeight);
+            guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, (width - imageWidth) / 2 + 93, (height - imageHeight) / 2 + 55, 176, 32, 17, 15, 256, 256);
         }
     }
 

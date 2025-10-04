@@ -5,14 +5,22 @@
     "minecraft:brown_mushroom",
     "farmersdelight:cabbage_leaf",
     "minecraft:brown_mushroom",
-    "#c:milk",
+    "#c:foods/milk",
     "brewinandchewin:flaxen_cheese_wedge",
-    "#c:milk",
+    "#c:foods/milk",
     "#c:eggs",
     "farmersdelight:pie_crust",
     "#c:eggs"
   ],
   "result": {
     "id": "brewinandchewin:quiche"
-  }
+  },
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "brewinandchewin"
+      ]
+    }
+  ]
 }
