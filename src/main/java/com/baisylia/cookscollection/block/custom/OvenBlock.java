@@ -89,7 +89,7 @@ public class OvenBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             BlockEntity tileEntity = level.getBlockEntity(pos);
             if (tileEntity instanceof OvenBlockEntity ovenBlockEntity) {
                 player.openMenu(ovenBlockEntity);
@@ -119,7 +119,7 @@ public class OvenBlock extends BaseEntityBlock {
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
             if (blockEntityType == ModBlockEntities.OVEN_BLOCK_ENTITY.get()) {
                 return (level1, pos, state1, entity) -> OvenBlockEntity.tick(level1, pos, state1, (OvenBlockEntity) entity);
             }

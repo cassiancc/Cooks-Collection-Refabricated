@@ -95,7 +95,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
             protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int p_155069_, int p_155070_) {
             }
 
-            protected boolean isOwnContainer(Player player) {
+            public boolean isOwnContainer(Player player) {
                 if (player.containerMenu instanceof OvenMenu) {
                     BlockEntity be = ((OvenMenu)player.containerMenu).getBlockEntity();
                     return be == OvenBlockEntity.this;
@@ -308,7 +308,7 @@ public class OvenBlockEntity extends BlockEntity implements ExtendedScreenHandle
 
     public void startOpen(Player player) {
         if (!this.remove && !player.isSpectator()) {
-            this.openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState());
+            this.openersCounter.incrementOpeners(player, this.getLevel(), this.getBlockPos(), this.getBlockState(), 10);
         }
 
     }
